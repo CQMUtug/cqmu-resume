@@ -1,0 +1,556 @@
+\iffalse
+	前言：
+		参考自一个祖传的模板，以及https://github.com/LeyuDame/BNUCV/tree/main 上的BNU的latex简历模板中的代码。
+		注意要用XeLaTeX编译链进行编译，且要进行三次编译才能显示照片。问就是LaTeX的锅。
+		vscode+latex的话，配置的json中"latex-workshop.latex.recipes"添加：
+		{
+            "name": "XeLaTeX*3",
+            "tools": [
+                "xelatex",
+                "xelatex",
+                "xelatex"
+            ]
+        }
+		即可使用三次XeLaTeX编译。
+
+		LaTeX+VScode怎么配置看https://www.zhihu.com/column/p/166523064。
+
+        每个章节的格式都能混着用，顺序都可以变，只是给了个例子。
+        比如你找工作，可以把技能那部分往前挪。
+        比如你竞赛经历很多，你就往前挪。
+        比如你觉得“其他”有点多余，就删了。
+
+        主要贡献还是把原本word的那个模板页眉页脚和背景完美加进来了。
+        LaTeX排版就是很整齐，强迫症狂喜。
+
+
+        记得要三次XeLaTeX编译！！！
+        记得要三次XeLaTeX编译！！！
+        记得要三次XeLaTeX编译！！！
+        这个很重要，所以说三遍！
+
+        你可以试试两次的，好像某些环境两次编译也能显示图像，但最好还是三次编译。
+\fi
+
+\documentclass[10pt]{article}
+\usepackage{xltxtra}
+\usepackage{bookmark}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{url}
+\urlstyle{tt}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{calc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{relsize}
+\usepackage{xspace}
+\usepackage{fontawesome}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{amssymb}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{fontspec}
+
+
+% 一些小设置，参考自https://github.com/LeyuDame/BNUCV/tree/main
+\CJKsetecglue{}							            % 取消中文字符与数字之间的间隔
+\protected\def\Cpp{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.28ex}{\relsize{-1}++}}\xspace}	% 这是个更好看的C++写法，你直接写C++的话，+号会很大，可以使用\Cpp来代替
+\setlength{\parindent}{0pt}							% 取消全局段落缩进
+\pagenumbering{gobble}								% 取消页码显示
+%\setlist{noitemsep}									% 禁用列表中项目之间的额外垂直间距，但保留列表周围的间距
+%\setlist{nosep}										% 禁用列表中项目之间的额外垂直间距及列表周围的间距
+\setlist[itemize]{topsep=0em, leftmargin=*}		% 增加了itemize顶部间距
+\setlist[enumerate]{topsep=0em, leftmargin=*}	% 增加了enumerate顶部间距
+
+\titleformat{\section}					    % 将原标题前面的数字取消了
+  {\LARGE\bfseries\raggedright} 		      % 字体改为LARGE，bold，左对齐
+  {}{0em}                      			  % 可用于添加全局标题前缀
+  {}                           			  % 可用于添加代码
+  [{\color{CQMU_Green}\titlerule}]            % 标题下方加一条线
+\titlespacing*{\section}{0cm}{*1.2}{*1.2}	% 标题左边留白，上方1.2倍，下方1.2倍
+
+\titleformat{\subsection}				    % 将原二级标题前面的数字取消了
+  {\large\bfseries\raggedright} 		      % 字体改为large，bold，左对齐
+  {}{0em}                      			  % 可用于添加全局二级标题前缀
+  {}                           			  % 可用于添加代码
+  []
+\titlespacing*{\subsection}{0cm}{*1.2}{*1.2}% 二级标题左边留白，上方1.2倍，下方1.2倍
+
+% 页面大小与页边距，按需求调整
+\usepackage[
+	a4paper,
+	left=1.2cm,
+	right=1.2cm,
+	top=1.5cm,
+	bottom=1cm,
+	nohead
+]{geometry}
+
+% 中文字符间距
+\renewcommand{\CJKglue}{\hskip 0.05em}
+
+% 英文字体
+\setmainfont[
+    Path=fonts/,
+    Extension=.ttf,
+    BoldFont=* Bold,
+]{Microsoft Yahei}
+% 中文字体
+\setCJKmainfont[
+    Path=fonts/,
+    Extension=.ttf,
+    BoldFont=* Bold,
+]{Microsoft Yahei}
+
+% 主题色
+% 重医绿
+\definecolor{CQMU_Green}{RGB}{  2, 90, 92}
+
+% 这里把表格的行间距调成1.2倍了
+\renewcommand{\arraystretch}{1.2}
+% 这里把正文的行间距调成1.2倍了
+\linespread{1.2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    ！！！！！！！！ 记得改这里 ！！！！！！！！
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 学院
+\newcommand{\school}{人工智能医学学院 | College of Medical Artificial Intelligence}
+% 也可以不写英语
+%\newcommand{\school}{电子信息学院}
+% 联系方式
+\newcommand{\contact}
+{
+    \small              % 换了更小的字号
+    % \footnotesize       % 这比上面的小一号
+    \scriptsize         % 这比上面的再小一号
+    \textcolor{white}
+    {
+        \faEnvelope \quad \href{losmosga@foxmail.com}{abc@foxmail.com}    % 邮箱，前面的超链接可以直达邮箱软件
+        \hspace{4em}    % 这里可以调间距
+        \faWechat \quad WeChat             % 微信
+        \hspace{4em}    % 这里可以调间距
+        \faPhone \quad xxxxxxxxxxx             % 手机号
+        \hspace{4em}    % 这里可以调间距
+        \faGithub \quad \href{https://github.com/}{https://github.com/}         % github
+    }
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    ！！！！！！！！ 这里开始就是正文了 ！！！！！！！！
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+	% 如果有多页简历，请把页眉页脚和背景复制粘贴到第二页的内容之前
+	% 页眉，校徽，学院名
+ % ------------------------------------------------------------------------
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=north, inner sep=0pt](header) at (current page.north){
+			\includegraphics[width=\paperwidth]{images/cqmu-header-green.png}
+		};
+		\node[anchor=west](school_logo) at (header.west){
+			\hspace{0.5cm}
+			\includegraphics[width=0.35\textwidth]{images/cqmu-logo-white.png}
+		};
+		\node[anchor=east](school_name) at(header.east){
+			\textcolor{white}{\textbf{\school}}
+			\hspace{0.5cm}
+		};
+	\end{tikzpicture}
+	\vspace{-4em}
+
+	% 页脚，联系方式
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=south, inner sep=0pt](footer) at (current page.south){
+			\includegraphics[width=\paperwidth]{images/cqmu-footer.png}
+		};
+        % 联系方式
+        \node[anchor=center] at(footer.center){\contact};
+	\end{tikzpicture}
+	
+	% 背景
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[opacity=0.1] at(current page.center){
+			\includegraphics[width=0.8\paperwidth, keepaspectratio]{images/cqmu-logo.eps}
+		};
+	\end{tikzpicture}
+% ---------------------------------------------------------------------
+	% 个人信息
+    \begin{figure}[h]
+        % 左半边，信息，比例占行宽86%，可以自己调
+        \begin{minipage}{0.80\textwidth}
+            \section{\makebox[\widthof{\faUser}][c]{\color{CQMU_Green}{\faUser}}\quad 个人信息}
+            \begin{tabularx}{\linewidth}{p{\widthof{出生日期:}}Xp{\widthof{政治面貌:}}X}
+                姓名: & 张三 & 性别: & 男|女 \\
+                出生日期: & 2003年11月14日 & 政治面貌: & 群众|到群众中去 \\
+                电话: & xxxxxxxxxx &地址: & 广东省深圳市\\ 电子邮箱: &  abc@foxmail.com \\
+                    
+                %% 想多加几行的话，就按上面的格式自行补充
+                %% 想加粗的话\textbf{}
+                %% 想多加几列的话，把\begin{tabularx}{\textwidth}{这里}的内容改一下，可以自己搜一下tabularx怎么用，也可以问gpt/文心一言/讯飞。
+            \end{tabularx}
+        \end{minipage}
+        % 右半边，照片，比例占行宽16%，可以自己调
+        % images/example_avatar.png 替换成你证件照的路径。
+        \begin{minipage}{0.16\textwidth}
+            \includegraphics[width=\linewidth]{images/example_avatar.png}
+        \end{minipage}
+        % 尽量留至少1%的间距，不然会换行
+    \end{figure}
+\vspace{-1em}
+\section{\makebox[\widthof{\faHeart}][c]{\color{CQMU_Green}{\faHeart}}\quad 求职意向}
+\vspace{-1em}
+\begin{table}[h!]
+        \begin{tabularx}{\textwidth}{XXp{\widthof{2021年 -- 预计2025年7月毕业}}}
+            
+             \textbf{职位:} 计算机工程师 &\textbf{期望行业:} 35岁无忧& \textbf{期望工作地点:} 地球\\
+             
+    
+            % 这里哪个高就加粗哪个，哪个不想放就留白 =w= 比如你综测高GPA低，你就只放综测和综测排名就好。
+        \end{tabularx}
+
+        
+    \end{table}
+	% 教育背景
+ %    	\faGraduationCap这类\fa开头的都是font awesome里的logo，想换成其他logo的话，可以看一下附带的fontawsome.pdf，自行替换。
+		% \section{\makebox[\widthof{     这里！    }][c]{\color{CQMU_Green}{     和这里！    }}\quad 标题}
+	\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CQMU_Green}{\faGraduationCap}}\quad 教育背景}
+	\vspace{-1em}
+    \begin{table}[h!]
+        \begin{tabularx}{\textwidth}{XXp{\widthof{2021年 -- 预计2025年7月毕业}}}
+            重庆医科大学xx学院 & xx专业 & 2021年 -- 预计20xx年7月毕业\\
+             \textbf{GPA:4.99/5.0} & \textbf{基础素质排名: T0/114} & \textbf{综合素质排名: T0/114} \\
+             \textbf{核心课程(100):}& & \\
+             \small 如何与产品经理共用大脑(92)& \small \textbf{全栈(全干)开发} & \small Vim的哲学 (92) \\
+             \small{数据库删库跑路指南(94)} & \small CPP十年入门(99)& \small \textbf{PHP世一语(98)}\\ \small \textbf{网络拓扑回环教程(80)}&\small \textbf{Kali Linux我看邢(89)}&\small \textbf{如何点亮一颗电容(91)}\\
+             
+    
+            % 这里哪个高就加粗哪个，哪个不想放就留白 =w= 比如你综测高GPA低，你就只放综测和综测排名就好。
+        \end{tabularx}
+        
+
+        
+    \end{table}
+    
+    % 项目经历（找导师一般都看中这个），可以改成“科研经历”
+    %     \faGears 这是齿轮，适合机械类，我电信的也喜欢齿轮，就用这个了
+    %     \faFlask 这是烧瓶，适合生化类
+    %     \faLaptop 这是个笔记本电脑，适合计算机类
+    %     \faUsers 这是三个人，适合商科
+    \section{\makebox[\widthof{\faGears}][c]{\color{CQMU_Green}{\faLaptop}}\quad 实践经历}
+    \vspace{0.5em}
+    % 小技巧，老师想看的重点加粗，比如商科类的一般更想看到数字，工科类的更想看到技术
+    \subsection{\Large 实习经历}
+    \vspace{0.5em}
+    \textbf{\uppercase\expandafter{\romannumeral1}. 我去的第一家实习机构( •̀\ ω •́\ ): 我是练习时长xx实习生
+    \quad{\color{CQMU_Green}\faMapMarker\textit{哎哟你在哪}}}  \hfill 2022年6月-2022年9月
+    \vspace{0.4em}
+    \begin{itemize}[itemsep=1pt, leftmargin=2em]
+        \item[\Large $\bullet$] \small 我学习到了如何更优雅地\textbf{唱、跳、rap}，为公司带来了\textbf{2.5亿}的流量;
+        \item[\Large $\bullet$] \small 掌握了Spring框架中\textbf{炒粉模块}的类加载器与\textbf{动作模块动态注入}的关系和模式;
+    \end{itemize}
+
+    \vspace{1em}
+    \textbf{\uppercase\expandafter{\romannumeral2}. 狠赚笔有限公司: Java炒粉实习生
+    \quad{\color{CQMU_Green}\faMapMarker\textit{广东深圳}}}  \hfill 2023年6月-2024年2月
+    \vspace{0.4em}
+    \begin{itemize}[itemsep=1pt, leftmargin=2em]
+        \item[\Large $\bullet$] \small 项目简介:负责开发一套基于JAVA的炒粉信息管理系统后端，该系统旨在\textbf{提升炒粉店的管理效率、优化客户体验以及实现数据的精准分析}。项目涉及\textbf{订单管理、库存管理、员工管理、数据分析}等多个核心功能模块的设计与实现。
+        \item[\Large $\bullet$] \small 涉及技术:SpringBoot、Mybatis、SpringMVC、Maven、Git、Linux、Redis等
+        \item[\Large $\bullet$] \small 职责描述: \textbf{这里遵循从短到长的原则}
+        \begin{enumerate}
+            \item 需求分析： 深入分析了炒粉店的管理需求，梳理出后端系统应支持的核心功能，并与团队成员共同制定了详细的需求文档。
+            \item 系统设计： 负责系统后端架构的设计，包括\textbf{数据库设计、接口设计、模块划分}等。通过合理的架构设计，确保了系统的稳定性与可扩展性。
+            \item 编码实现： 使用Java语言及Spring Boot框架进行后端开发，实现了\textbf{订单管理、库存管理、员工管理}等核心功能模块的接口。同时，\textbf{优化了数据库操作，提升了数据访问效率}。
+        \end{enumerate}
+        \item[\Large $\bullet$] \small 项目成就:获得\textbf{坤算机软件著作权}，获得公司实习转正机会、掌握\textbf{Java炒粉核心技术}等等
+        
+    \end{itemize}
+
+    \vspace{1em}
+
+    \textbf{\uppercase\expandafter{\romannumeral3}. 坤成公司: 两年半练习生
+    \quad{\color{CQMU_Green}\faMapMarker\textit{哎哟你在哪}}}  \hfill 2024年6月-2025年2月
+    \vspace{0.4em}
+    \begin{itemize}[itemsep=1pt, leftmargin=2em]
+        \item[\Large $\bullet$] \small 你已小成;
+        \item[\Large $\bullet$] \small 但学无止境，继续向前吧。
+    \end{itemize}
+
+    \vspace{1em}
+
+    \newpage
+
+ % ------------------------------------------------------------------------
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=north, inner sep=0pt](header) at (current page.north){
+			\includegraphics[width=1\paperwidth]{images/cqmu-header-green.png}
+		};
+		\node[anchor=west](school_logo) at (header.west){
+			\hspace{0.5cm}
+			\includegraphics[width=0.35\textwidth]{images/cqmu-logo-white.png}
+		};
+		\node[anchor=east](school_name) at(header.east){
+			\textcolor{white}{\textbf{\school}}
+			\hspace{0.5cm}
+		};
+	\end{tikzpicture}
+	\vspace{-4em}
+
+	% 页脚，联系方式
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=south, inner sep=0pt](footer) at (current page.south){
+			\includegraphics[width=\paperwidth]{images/cqmu-footer.png}
+		};
+        % 联系方式
+        \node[anchor=center] at(footer.center){\contact};
+	\end{tikzpicture}
+	
+	% 背景
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[opacity=0.1] at(current page.center){
+			\includegraphics[width=0.8\paperwidth, keepaspectratio]{images/cqmu-logo.eps}
+		};
+	\end{tikzpicture}
+% ---------------------------------------------------------------------
+    
+    
+    \subsection{\Large 项目经验}
+    \textbf{\uppercase\expandafter{\romannumeral1}.} \textbf{学生管理系统}\hspace{1em}项目负责人/成员/打工人
+     \hfill 2024年1月-2023年12月
+
+    
+    % \vspace{0.4em}
+    \begin{itemize}[itemsep=1pt, leftmargin=2em]
+        \item[\Large $\bullet$] \small 项目简介: 学生管理系统是一款\textbf{旨在提高学校学生信息管理效率}的软件。该系统具备\textbf{学生信息管理、成绩管理、课程管理、考勤管理}等功能，通过现代化的信息管理手段，帮助学校实现对学生信息的全面、准确、快速管理。
+        \item[\Large $\bullet$] \small 责任描述: 
+        \begin{enumerate}
+            \item 需求分析： 负责收集学校各部门对于学生管理系统的功能需求，\textbf{整理并撰写需求规格说明书}。与团队成员、学校相关部门沟通，确保需求明确、无歧义。
+            \item 系统设计： 根据需求分析结果，\textbf{设计系统的整体架构、数据库结构、界面布局}等。\textbf{绘制系统流程图、数据流程图、数据库设计图}等相关设计文档。
+            \item 编码实现：  负责编写系统后台代码，\textbf{包括数据库操作、业务逻辑处理}等。与前端开发人员协作，确保前后端数据交互顺畅。同时，对代码进行测试，确保系统的\textbf{稳定性和安全性}。
+        \end{enumerate}
+        \item[\Large $\bullet$] \small 项目成就: 成功开发并上线学生管理系统，网址:\hyperlink{cqmu}{https://www.cqmu.edu.cn/}，得到学校师生的广泛好评。系统运行稳定，提高了学校学生信息管理的效率。通过此项目，团队成员积累了宝贵的开发经验，提升了团队协作能力。该系统被评为学校优秀项目，并在相关比赛中获得奖项......
+
+    \end{itemize}
+
+    \vspace{1em}
+    \textbf{\uppercase\expandafter{\romannumeral2}.} \textbf{大模型医学影像学应用} \hfill \textbf{临床二期实验} \\
+    项目负责人/打工人/成员 \hfill 2023年12月-2024年1月\\
+    \textbf{独自进行前期研究，实验验证和论文写作}。重点探索了将\textbf{多模态医学影像}（如MRI和CT）与\textbf{自然语言模型}相结合的方法，以提高脑肿瘤检测的准确性。成功将对比学习和Prompt Fine-Tuning技术应用于医学影像分析中，将模型在脑肿瘤检测任务中的性能提升到了\textbf{超越SOTA的水平}，特别是在 one-shot 场景下取得了显著的改进。
+
+    % 不知道写啥好
+    \vspace{1em}                % 这是换行用的
+
+
+    % \subsection{基于阴间蓝牙通信系统的高速运转机器设计\hfill SCI期刊-二区在投}
+    \textbf{\uppercase\expandafter{\romannumeral3}.} \textbf{基于阴间蓝牙通信系统的高速运转机器设计\hfill SCI期刊-二区在投}\\
+    \textbf{第一作者} \hfill 2023年12月-2024年1月
+    
+    此处省略一万字。
+
+
+    \subsection{\Large 社团活动}
+    \textbf{\uppercase\expandafter{\romannumeral1}.} \textbf{学习部}\hspace{1em} 负责人 \hfill 2023年1月-2024年1月\\
+
+    学习部作为一个专注于学术、学习支持和文化活动组织的部门，在促进学生全面发展、提高学习效率和营造良好学习氛围方面发挥着重要作用
+    
+    \vspace{1em}
+
+    
+    \textbf{\uppercase\expandafter{\romannumeral2}.} \textbf{计算机社团}\hspace{1em}你的职务 \hfill 2023年1月-2024年1月\\
+
+    计算机社团为学生提供了一个学习计算机知识和技能的平台，通过组织各类技术讲座、研讨会、培训课程等活动，帮助学生深入了解计算机领域的最新技术和发展趋势。
+    
+    \vspace{1em}
+
+    
+    \textbf{\uppercase\expandafter{\romannumeral3}.} \textbf{一些活动}\hspace{1em}你的身份 \hfill 2023年1月-2024年1月\\ 
+
+    大学活动通常包括学术讲座、研讨会、研讨会等，这些活动能够让学生接触到最新的学术研究成果，拓宽学术视野，加深对专业知识的理解。
+
+
+    
+    % 这是个工科类加粗的例子
+    % \vspace{1em}                % 这是换行用的
+    % \subsection{Improving Multi-Modal Brain Tumor Detection with Contrastive Learning and CLIP Prompt Fine-Tuning \hfill EI会议-在投}
+
+    
+    % \subsection{基于阴间蓝牙通信系统的高速运转机器设计\hfill SCI期刊-二区在投}
+        
+    % \textbf{一作} \hfill 2023年12月-2024年1月
+    
+    % 你有这么\textbf{高速运转的机械}进入中国，进入我给出的原理，小时候。就是\textbf{研发}人，就是研发这个东西的原理是\textbf{阴间政权}管。你知道为什么有圣灵给它\textbf{运转仙位}？还有专门饲养这个？为什么地下产这种东西？他管的他是五世同堂旗下子孙。你以为我跟你闹着玩儿呢？你不警察吗？黄龙江一带全都\textbf{带蓝牙}。黄龙江我告诉你在阴间是是那个化名，化名我小舅，亲小舅，张学兰的那个嫡子、嫡孙。
+
+    % % 在研的也能写
+    % % 课程大作业也能写，但是不要标明是大作业就行
+    % % 一个例子，别真写金工实习做榔头
+    % \vspace{1em}
+    % \subsection{大国工匠-论锤子是怎么炼成的\hfill 工程项目-已完结}
+        
+    % \textbf{主要技术负责人} \hfill 忘了日期
+    
+    % 对古代中国工匠制作锤子的历史、工艺和技术进行深入研究，包括原材料的选择、工具的制作、锤子的设计和锻造工艺等方面。结合现代工艺技术和设计理念，探索如何将古代工匠的技艺与现代制造工艺相结合，以提高锤子的性能、品质和设计。通过实际制作锤子的过程，验证理论和技术的可行性，并对制作过程中的关键环节进行深入分析和总结。
+
+    % 终于用完一页了，加一页展示怎么加页眉页脚
+    % \newpage
+
+    % 宝子，请加在这里
+	% 页眉，校徽，学院名
+
+
+    % 技能特长，上面写很多的话，这里就随便写点，反正上面都看出来了。上面写的不多的话，这里着重强调你会什么。
+    % 哦，你找工作的话，这里多写点，记得对口，可以\textbf{}加粗。
+    % 这里能吹牛皮就吹牛皮，但是确保面试的时候别露馅就行。
+\newpage
+    
+ % ------------------------------------------------------------------------
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=north, inner sep=0pt](header) at (current page.north){
+			\includegraphics[width=1\paperwidth]{images/cqmu-header-green.png}
+		};
+		\node[anchor=west](school_logo) at (header.west){
+			\hspace{0.5cm}
+			\includegraphics[width=0.35\textwidth]{images/cqmu-logo-white.png}
+		};
+		\node[anchor=east](school_name) at(header.east){
+			\textcolor{white}{\textbf{\school}}
+			\hspace{0.5cm}
+		};
+	\end{tikzpicture}
+	\vspace{-4em}
+
+	% 页脚，联系方式
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=south, inner sep=0pt](footer) at (current page.south){
+			\includegraphics[width=\paperwidth]{images/cqmu-footer.png}
+		};
+        % 联系方式
+        \node[anchor=center] at(footer.center){\contact};
+	\end{tikzpicture}
+	
+	% 背景
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[opacity=0.1] at(current page.center){
+			\includegraphics[width=0.8\paperwidth, keepaspectratio]{images/cqmu-logo.eps}
+		};
+	\end{tikzpicture}
+% ---------------------------------------------------------------------
+    
+    \section{\makebox[\widthof{\faWrench}][c]{\color{CQMU_Green}{\faWrench}}\quad 专业技能}
+    \vspace{0.5em}
+    \begin{itemize}
+        \item 这里就先强调你最擅长什么，\textbf{适当}吹牛可以，能稳得住就行，下面是一个硬件狗的自述:
+        \item 熟练使用\textbf{\Cpp 、Python、Matlab}编程语言。
+        \item 熟悉Windows与Linux端开发。
+        \item 熟练使用\textbf{Tensorflow，Pytorch}等深度学习框架。
+        \item 熟练掌握\Cpp 与Python环境下OpenCV与Qt应用的开发，且\textbf{熟练使用Qt Creator}软件。
+        \item \textbf{熟练使用Altium Designer与LCEDA}进行封装绘制与板子设计。
+        \item 熟练使用Keil，Arduino IDE等集成开发软件。
+        \item 了解模式识别，强化学习，遗传算法，知识蒸馏等相关概念。
+    \end{itemize}
+    
+    \section{\makebox[\widthof{\faTrophy}][c]{\color{CQMU_Green}{\faTrophy}}\quad 竞赛经历}
+    \vspace{-1em}
+    % 这里就主要写一些竞赛获奖，可以按照含金量，获奖等级这些维度来排序（如果没有市级及以上的话，就写点学校的吧，赶快呼吁学弟学妹们多多参与下专业比赛，不然到时写简历可就两行泪了）
+    \begin{table}[h!]
+        \begin{tabularx}{\textwidth}{Xp{\widthof{第零负责人}}p{\widthof{国家级-第100名}}p{\widthof{2030年13月}}}
+            \textbf{2023年全国大学生无聊透顶比赛} & 第一负责人 & 国家级-第10名 & 2023年4月 \\
+            \textbf{2023年优质睡眠大赛} & 个人参赛 & 国家级-一等奖 & 2023年8月\\
+            \textbf{2022年全国大学生干饭大赛} & 个人参赛 & 省级-一等奖 & 2022年12月\\
+            % 同理，可以自己加
+        \end{tabularx}
+    \end{table}
+
+    \section{\makebox[\widthof{\faCertificate}][c]{\color{CQMU_Green}{\faCertificate}}\quad 技能证书}
+    \vspace{0.5em}
+    \begin{itemize}
+        \item 与你求职的岗位招聘要求相关的证书，越相关越OK，比如你要面网络工程师：
+        \item 2021.6 \hspace{2em} Cisco Certified Architect Certification
+        \item 2021.6 \hspace{2em} Huawei Certified ICT Expert-Security
+        \item 2021.6 \hspace{2em} 软考-软件设计师中级
+        \item 2021.6 \hspace{2em} 计算机四级证书
+    \end{itemize}
+
+    % 所获荣誉（这个看你想不想写了）
+    \section{\makebox[\widthof{\faStar}][c]{\color{CQMU_Green}{\faStar}}\quad 荣誉与奖励}
+    \vspace{-1em}
+    \begin{multicols}{2}
+        \begin{itemize}
+            \item 2021.6 \hspace{2em} 某先进个人 
+            \item 2021.6 \hspace{2em} 某罕见奖学金获得者 
+            \item 2021.6 \hspace{2em} 某优秀志愿者
+            \item 2021.6 \hspace{2em} 某二课堂之星
+            \item 2021.6 \hspace{2em} 某大使
+            \item 2021.6 \hspace{2em} 某年某奖学金某等奖
+            \item 2021.6 \hspace{2em} 某年优秀团员称号
+            \item 2021.6 \hspace{2em} 某年某称号
+        \end{itemize}
+    \end{multicols}
+
+    % 自我评价
+    \section{\makebox[\widthof{\faStreetView}][c]{\color{CQMU_Green}{\faStreetView}}\quad 自我评价}
+    \vspace{0.5em}
+    \begin{itemize}
+        \item 个人特质：诚实、责任感、团队合作等
+        \item 职业规划：简短说明你的职业目标和未来计划
+    \end{itemize}
+
+\newpage
+    
+ % ------------------------------------------------------------------------
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=north, inner sep=0pt](header) at (current page.north){
+			\includegraphics[width=1\paperwidth]{images/cqmu-header-green.png}
+		};
+		\node[anchor=west](school_logo) at (header.west){
+			\hspace{0.5cm}
+			\includegraphics[width=0.35\textwidth]{images/cqmu-logo-white.png}
+		};
+		\node[anchor=east](school_name) at(header.east){
+			\textcolor{white}{\textbf{\school}}
+			\hspace{0.5cm}
+		};
+	\end{tikzpicture}
+	\vspace{-4em}
+
+	% 页脚，联系方式
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=south, inner sep=0pt](footer) at (current page.south){
+			\includegraphics[width=\paperwidth]{images/cqmu-footer.png}
+		};
+        % 联系方式
+        \node[anchor=center] at(footer.center){\contact};
+	\end{tikzpicture}
+	
+	% 背景
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[opacity=0.1] at(current page.center){
+			\includegraphics[width=0.8\paperwidth, keepaspectratio]{images/cqmu-logo.eps}
+		};
+	\end{tikzpicture}
+% ---------------------------------------------------------------------
+
+    % 其他（也是看你想不想写）
+    \section{\makebox[\widthof{\faInfo}][c]{\color{CQMU_Green}{\faInfo}}\quad 其他}
+    \vspace{0.5em}
+    \begin{itemize}
+        \item 英语水平-CET6级x分，雅思y分，托福z分
+        \item 头发茂密程度
+        \item 技术博客: 某网址
+        \item 一些关系不大的证书，可写可不写
+        \item 教师资格证：xxx
+        \item 普通话证书：几级几等
+        \item 文字排版：\LaTeX
+        \item 兴趣爱好：简短列出，展示个性
+        \item 推荐人：如果有，可以列出推荐人的联系信息，通常需要事先征得推荐人同意
+    \end{itemize}
+
+\end{document}
