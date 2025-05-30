@@ -7,3 +7,7 @@
 1. download .zip or git clone repo
 2. use XeLaTeX compiler
 3. click anywhere you wanna change
+
+## Front Page
+
+[]()
