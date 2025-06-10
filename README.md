@@ -10,4 +10,4 @@
 
 ## Front Page
 
-[]()
+[](image.png)
